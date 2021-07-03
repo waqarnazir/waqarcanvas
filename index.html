@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tourney:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Otomanopee+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/CanvasCss.css">
+    <title>HTML Canvas</title>
+</head>
+<body>
+    <header class="heading">
+        <h1>Welcome to Canvas Write on Image</h1>
+    </header>
+    <section>
+        <div class="flex-container">
+            <div class="flex-child-left">
+                <div class="head">
+                    <fieldset>
+                        <legend>Header</legend>
+                        <div>
+                            <Label for="header-color">Choose Header Color: </Label>
+                            <input type="color" value="#ffffff" id="header-color" oninput="headercolor();">
+                        </div>
+                        <div>
+                            <Label for="header">Enter Header Text:</Label>
+                            <input type="text" maxlength="20" id="header" placeholder="Enter Header Text" onkeyup="writeheader();" >
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="imag">
+                    <fieldset>
+                        <legend>Image</legend>
+                        <input type="file" id="picture" onchange="set(this);">
+                        <input type="button" value="Show on Canvas" onclick="show();">
+                        <img id="preview">
+                        <div>
+                            <Label for="text">Enter the Image text :</Label>
+                            <input type="text" maxlength="20" id="text" placeholder="Enter Image Text" onkeyup="writetext();">
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="foot">
+                    <fieldset>
+                        <legend>Footer</legend>
+                        <div>
+                            <Label for="footer-color">Choose Footer Color: </Label>
+                            <input type="color" value="#ffffff" id="footer-color" oninput="footercolor();">
+                        </div>
+                        <div>
+                            <Label for="footer">Enter Footer Text:</Label>
+                            <input type="text" maxlength="20" id="footer" placeholder="Enter Footer Text" onkeyup="writefooter();">
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="fontsetting">
+                    <fieldset>
+                        <legend>Font Settings</legend>
+                        <div>
+                            <Label for="font-color">Choose Font Color: </Label>
+                            <input type="color" value="#000000" id="font-color" oninput="fontcolor();">
+                        </div>
+                        <div>
+                            <Label for="font-size">Choose Font Size: </Label>
+                            <input type="range" min="10" max="35" value="20" id="font-size" onchange="fontsize();">
+                        </div>
+                        <div>
+                            <Label for="font-family">Choose Font Family: </Label>
+                            <select name="f-f" id="font-family" value="Lobster" onchange="fontfamily();">
+                                <option value="Lobster">Lobster</option>
+                                <option value="Abril Fatface">Abril Fatface</option>
+                                <option value="Fredoka One">Fredoka One</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Monoton">Monoton</option>
+                                <option value="Tourney">Tourney</option>
+                                <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
+                                <option value="Otomanopee One">Otomanopee One</option>
+                            </select>
+                    </fieldset>
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Download Canvas" onclick="downloadImg();">
+                    <input type="button" value="Clear Canvas" onclick="clean();">
+                    <img id="downpreview">
+                </div>
+            </div>
+            <div class="flex-child-right">
+                <canvas id="canvas" width="600" height="500"></canvas>
+            </div>
+        </div>
+    </section>
+    <script>
+        var canvas=document.getElementById("canvas");
+        var ctx= canvas.getContext("2d");
+        var image=document.getElementById("preview");
+        var headerc=document.getElementById("header-color");
+        var footerc=document.getElementById("footer-color");
+        var fontc=document.getElementById("font-color");
+        var headert=document.getElementById("header");
+        var footert=document.getElementById("footer");
+        var textt=document.getElementById("text");
+        var fonts=document.getElementById("font-size");
+        var downpreview = document.getElementById("downpreview");
+        var fontf=document.getElementById("font-family");
+        var align=document.getElementsByName("alignment");
+        ctx.font = fonts.value + "px " + fontf.value;       
+        function headercolor(){
+            ctx.fillStyle = headerc.value;
+            ctx.fillRect(0,0,600,100);
+            ctx.fillStyle = fontc.value;
+            ctx.textAlign="center"
+            ctx.fillText(headert.value, 300, 50);
+        }
+        function footercolor(){
+            ctx.fillStyle = footerc.value;
+            ctx.fillRect(0,400,600,100);
+            ctx.fillStyle = fontc.value;
+            ctx.textAlign="center"
+            ctx.fillText(footert.value, 300, 450);
+        }
+        function set(input){
+            var reader=new FileReader();
+            reader.onload=function(e){  
+                image.src=e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+        function show(){ 
+            ctx.clearRect(0,100,600,300);
+            ctx.drawImage(image,0,100,600,300);
+            writetext();
+        }
+        function clean(){
+            headert.value="";
+            headerc.value="#ffffff";
+            footert.value="";
+            footerc.value="#ffffff";
+            textt.value="";
+            fontf.value="Lobster";
+            fontc.value="#000000";
+            fonts.value="20";
+            ctx.font = fonts.value + "px " + fontf.value;
+            ctx.clearRect(0,0,600,500);        
+        }
+        function writeheader(){
+            ctx.clearRect(0,0,600,100);
+            ctx.fillStyle = headerc.value;
+            ctx.fillRect(0,0,600,100);
+            ctx.fillStyle = fontc.value;
+            ctx.textAlign="center"
+            ctx.fillText(headert.value, 300, 50);
+        }
+        function writefooter(){
+            ctx.clearRect(0,400,600,100);
+            ctx.fillStyle = footerc.value;
+            ctx.fillRect(0,400,600,100);
+            ctx.fillStyle = fontc.value;
+            ctx.textAlign="center"
+            ctx.fillText(footert.value, 300, 450);
+        }
+        function writetext(){
+            ctx.clearRect(0,100,600,300);
+            ctx.drawImage(image,0,100,600,300);
+            ctx.fillStyle = fontc.value; 
+            ctx.textAlign="center"
+            ctx.fillText(textt.value, 300, 250);
+        }
+        function fontcolor(){
+            ctx.fillStyle = fontc.value;
+            ctx.clearRect(0,0,600,500);
+            writeheader();
+            writetext();
+            writefooter();
+        }
+        function fontsize(){
+            fonts=document.getElementById("font-size");
+            ctx.font = fonts.value + "px "+ fontf.value;
+            ctx.clearRect(0,0,600,500);
+            writeheader();
+            writetext();
+            writefooter();
+        }
+        function downloadImg(){
+            const dataURI = canvas.toDataURL();
+            downpreview.src = dataURI;
+            if(window.navigator.msSaveBlob){
+                window.navigator.msSaveBlob(canvas.msToBlob(),"download.png");
+            }
+            else{
+                const a = document.createElement("a");
+                document.body.appendChild(a);
+                a.href = dataURI;
+                a.download = "canvas.png";
+                a.click();
+                document.body.removeChild(a);
+            }        
+        }
+        function fontfamily(){
+            var fontf=document.getElementById("font-family");
+            ctx.font = fonts.value + "px " + fontf.value;
+            ctx.clearRect(0,0,600,500);
+            writeheader();
+            writetext();
+            writefooter();
+        }
+    </script>
+</body>
+</html>

@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 body{
-    min-width: 650px;
+    min-width: fit-content;
 }
 .heading{
     background-color: red;
